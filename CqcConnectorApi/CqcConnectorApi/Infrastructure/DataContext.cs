@@ -21,7 +21,7 @@ public sealed class DataContext(IConfiguration configuration) : IDataContext
         SqlMapper.AddTypeHandler(new CollectionStringTypeHandler());
     }
 
-    private static async Task InitProvider(IDbConnection? connection)
+    private static async Task InitProvider(IDbConnection connection)
     {
         var sql = """           
             CREATE TABLE IF NOT EXISTS 
