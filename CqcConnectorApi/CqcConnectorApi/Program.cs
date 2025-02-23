@@ -1,4 +1,5 @@
 using CqcConnectorApi.Application;
+using CqcConnectorApi.Application.GetProvider;
 using CqcConnectorApi.Application.GetProviders;
 using CqcConnectorApi.Infrastructure;
 using CqcConnectorApi.Interfaces;
@@ -15,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<DataContext>();
 builder.Services.AddScoped<ICqcService, CqcService>();
 builder.Services.AddScoped<GetProvidersQuery>();
+builder.Services.AddScoped<GetProviderQuery>();
 
 builder.Services.AddHttpClient<ICqcService, CqcService>((serviceProvider, client) =>
 {
@@ -31,8 +33,10 @@ await EnsureDatabaseAndTablesExist(app);
 
 app.UseHttpsRedirection();
 
-app.MapGet("/providers", async (GetProvidersQuery query, int page, int perPage) 
-    =>  await query.Get(new PageRequest(page, perPage)));   
+app.MapGet("/providers", async (GetProvidersQuery query, int page, int perPage)
+    => await query.Get(new PageRequest(page, perPage)));
 
+app.MapGet("/providers/{id}", async (GetProviderQuery query, string id)
+    => await query.Get(id));
 
 await app.RunAsync();
