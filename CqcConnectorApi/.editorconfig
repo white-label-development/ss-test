@@ -1,0 +1,13 @@
+﻿[*.cs]
+
+# Suppress CA2007: Do not directly await a Task
+dotnet_diagnostic.CA2007.severity = none
+
+# CA1515: Consider making public types internal
+dotnet_diagnostic.CA1515.severity = none
+
+# CA1056: URI-like properties should not be strings
+dotnet_diagnostic.CA1056.severity = none
+
+# CA2227: Collection properties should be read only
+dotnet_diagnostic.CA2227.severity = none

@@ -64,6 +64,7 @@ Authentication is required to access this API but is not the focus of this test.
 We need an internal API (the Connector) to lookup providers and individual providers:
 
 GET: https://api.service.cqc.org.uk/public/v1/providers
+
 GET: https://api.service.cqc.org.uk/public/v1/providers/{id}
 
 #### Behaviour requirements

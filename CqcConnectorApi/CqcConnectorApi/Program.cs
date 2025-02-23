@@ -1,41 +1,38 @@
+using CqcConnectorApi.Application;
+using CqcConnectorApi.Application.GetProviders;
+using CqcConnectorApi.Infrastructure;
+using CqcConnectorApi.Interfaces;
+
+static async Task EnsureDatabaseAndTablesExist(WebApplication app)
+{
+    using var scope = app.Services.CreateScope();
+    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+    await dataContext.Init();
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+builder.Services.AddSingleton<DataContext>();
+builder.Services.AddScoped<ICqcService, CqcService>();
+builder.Services.AddScoped<GetProvidersQuery>();
+
+builder.Services.AddHttpClient<ICqcService, CqcService>((serviceProvider, client) =>
+{
+    //  TODO AppSecrets. KeyVault etc
+    string cqcApiBaseUrl = "https://api.service.cqc.org.uk";
+    client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "65907e17e06440f6b212ded670f54cbb");
+    client.BaseAddress = new Uri(cqcApiBaseUrl);
+});
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+await EnsureDatabaseAndTablesExist(app);
 
 app.UseHttpsRedirection();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+app.MapGet("/providers", async (GetProvidersQuery query, int page, int perPage) 
+    =>  await query.Get(new PageRequest(page, perPage)));   
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
 
-app.Run();
-
-internal record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
+await app.RunAsync();
