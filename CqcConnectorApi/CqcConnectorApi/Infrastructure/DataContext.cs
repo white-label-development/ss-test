@@ -1,14 +1,15 @@
-﻿using Dapper;
+﻿using CqcConnectorApi.Interfaces;
+using Dapper;
 using Microsoft.Data.Sqlite;
 using System.Data;
 
 namespace CqcConnectorApi.Infrastructure;
 
-public sealed class DataContext(IConfiguration configuration)
+public sealed class DataContext(IConfiguration configuration) : IDataContext
 {
     private readonly IConfiguration _configuration = configuration;
 
-    public IDbConnection CreateConnection() => 
+    public IDbConnection CreateConnection() =>
         new SqliteConnection(_configuration.GetConnectionString("CqcDatabase"));
 
     public async Task Init()
@@ -16,6 +17,8 @@ public sealed class DataContext(IConfiguration configuration)
         // create database tables if they don't exist
         using var connection = CreateConnection();
         await InitProvider(connection);
+
+        SqlMapper.AddTypeHandler(new CollectionStringTypeHandler());
     }
 
     private static async Task InitProvider(IDbConnection? connection)
@@ -50,6 +53,7 @@ public sealed class DataContext(IConfiguration configuration)
                 Constituency TEXT,
                 LocalAuthority TEXT,
                 LastInspectionDate DATETIME,
+                InsertDate DATETIME,
                 PRIMARY KEY (ProviderId)
             );
 

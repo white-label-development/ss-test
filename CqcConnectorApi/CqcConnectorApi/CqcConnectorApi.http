@@ -4,17 +4,12 @@ GET {{CqcConnectorApi_HostAddress}}/providers?page=1&PerPage=10
 Accept: application/json
 
 ###
-GET {{CqcConnectorApi_HostAddress}}/providers/1-1000281973
+GET {{CqcConnectorApi_HostAddress}}/providers/1-10000227676
 Accept: application/json
 
-
 ###
-
-
-
-
+#
 # External API
-#  use headr Ocp-Apim-Subscription-Key with value 65907e17e06440f6b212ded670f54cbb
 #
 # GET Providers
 #
@@ -22,12 +17,11 @@ GET https://api.service.cqc.org.uk/public/v1/providers?Page=1&perPage=10
 Accept: application/json
 Ocp-Apim-Subscription-Key: 65907e17e06440f6b212ded670f54cbb
 
-
 ###
 #
 # GET Provider
 #
-GET https://api.service.cqc.org.uk/public/v1/providers/1-345678912
+GET https://api.service.cqc.org.uk/public/v1/providers/1-1000281973
 Accept: application/json
 Ocp-Apim-Subscription-Key: 65907e17e06440f6b212ded670f54cbb
 

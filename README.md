@@ -1,5 +1,20 @@
 # ss-test
 
+## tl;dr
+
+`CqcConnectorApi.Http` is set up for running the app as https (ie: ``@CqcConnectorApi_HostAddress = https://localhost:7134``)
+
+Add breakpoints to `GetProviderQuery` to see a requested Provider being saved,
+and subsequent requests being served from the database until the item is a month old.
+
+What no tests? Nope. I ran out of time, 
+mostly due to the `CollectionStringTypeHandler` and my inexperience with Dapper and SQLite.
+
+Tip: You can drop the LocalDatabase.db into https://inloop.github.io/sqlite-viewer/ to view the contents.
+
+What have I learnt from this? Dapper and SqlLite are quick to use but there are a few gotchas.
+I have also learnt that I am not a rapid coder.
+
 ## Plan
 
 2 hours is not very long, so choose what is best to do in that time, adding nice-to-haves if there is time.

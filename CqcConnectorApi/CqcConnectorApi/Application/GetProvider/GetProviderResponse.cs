@@ -34,4 +34,6 @@ public class GetProviderResponse
     {
         get; set;
     }    
+
+    public DateTime InsertDate { get; set; } // when the record was inserted into the database
 }

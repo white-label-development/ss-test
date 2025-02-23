@@ -14,6 +14,8 @@ static async Task EnsureDatabaseAndTablesExist(WebApplication app)
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton<DataContext>();
+builder.Services.AddSingleton<IDataContext, DataContext>();
+
 builder.Services.AddScoped<ICqcService, CqcService>();
 builder.Services.AddScoped<GetProvidersQuery>();
 builder.Services.AddScoped<GetProviderQuery>();
